@@ -1,0 +1,76 @@
+fragment AnimeListFields on MediaList {
+  id,
+  progress,
+  notes,
+  updatedAt,
+  media {
+    id,
+    idMal,
+    title {
+      userPreferred
+    },
+    episodes,
+    status,
+    nextAiringEpisode {
+      episode,
+      timeUntilAiring
+    },
+    coverImage {
+      medium
+    }
+    endDate {
+      year,
+      month
+    }
+  }
+}
+
+fragment AnimeFields on Media {
+    id,
+    idMal,
+    season,
+    title {
+      userPreferred
+    },
+    episodes,
+    status,
+    nextAiringEpisode {
+      episode,
+      timeUntilAiring
+    },
+    coverImage {
+      medium
+    },
+    startDate {
+      year,
+      month,
+      day
+    }
+    endDate {
+      year,
+      month
+    },
+    mediaListEntry {
+      id,
+      status,
+      progress,
+      notes,
+      updatedAt,
+    }
+}
+
+query GetAnimeList($id: Int!) {
+  Page(page: 0, perPage: 50) {
+    mediaList(userId: $id, status: CURRENT, type: ANIME) {
+      ...AnimeListFields
+    }
+  }
+}
+
+query GetAiringList($season: MediaSeason) {
+  Page(page: 0, perPage: 50) {
+    media (type: ANIME, status_in: [RELEASING, NOT_YET_RELEASED], startDate_greater: 2000, onList: true, season: $season, sort: START_DATE) {
+      ...AnimeFields
+    }
+  }
+}
