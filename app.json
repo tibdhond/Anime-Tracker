@@ -29,7 +29,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#FFFFFF",
+          "backgroundColor": "#000000",
           "image": "./assets/images/tanjonion.png",
           "imageWidth": 76
         }
