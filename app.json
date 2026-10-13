@@ -4,37 +4,39 @@
     "slug": "Anime-Tracker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/tanjonion.png",
     "scheme": "animetracker",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/tanjonion.icon"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/images/tanjonion.png",
+        "backgroundImage": "./assets/images/tanjonion.png",
+        "monochromeImage": "./assets/images/tanjonion.png"
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.animetracker"
     },
-    "web": {
+      "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/tanjonion.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/images/tanjonion.png",
           "imageWidth": 76
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-image",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -1,10 +1,9 @@
 import { Text, View, StyleSheet } from "react-native";
+import {Redirect} from "expo-router";
 
 export default function Index() {
   return (
-    <View style={styles.container}>
-      <Text>Edit src/app/index.tsx to edit this screen.</Text>
-    </View>
+    <Redirect href="/(app)/current" />
   );
 }
 
@@ -13,5 +12,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: 'rgb(25, 25, 25)'
   },
 });

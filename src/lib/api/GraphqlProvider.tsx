@@ -1,20 +1,22 @@
 import { GraphQLClient } from "graphql-request";
-import { createContext, ReactNode, useContext } from "react";
+import {createContext, ReactNode, useContext, useMemo} from "react";
+import {useAuth, AuthContextValue} from "@/lib/auth/AuthProvider";
 import {getSdk, Sdk} from "@/lib/api/__gen__/plugins/graphql-request";
-import {getAccessToken} from "@/lib/auth/storage";
 
 const GraphQLContext = createContext<Sdk | undefined>(undefined);
 
 export const useGraphQLContext = () => useContext(GraphQLContext);
 
 export const GraphQLRequestProvider = ({ children }: { children?: ReactNode }) => {
-    // Lambda getter + useMemo to create client
-    const  = getAccessToken()
-
     const endpoint = 'https://graphql.anilist.co/';
-    const graphQLClient = new GraphQLClient(endpoint);
+    const { accessToken }: AuthContextValue = useAuth();
+
+    const graphQLClient = useMemo(() => new GraphQLClient(endpoint, {
+        headers: {
+            authorization: `Bearer ${accessToken}`,
+        }
+    }), [accessToken]);
     const sdk = getSdk(graphQLClient);
 
     return <GraphQLContext.Provider value={sdk}>{children}</GraphQLContext.Provider>
-
 };

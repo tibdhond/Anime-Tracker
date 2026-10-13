@@ -1,0 +1,1 @@
+export const SEASON_CUTOFF = 1000 * 60 * 60 * 24 * 30 * 1.5; // ~1.5 months

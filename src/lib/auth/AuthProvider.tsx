@@ -3,12 +3,15 @@ import {createContext, PropsWithChildren, useCallback, useContext, useEffect, us
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import {AuthError, AuthRequestPromptOptions, AuthSessionResult} from "expo-auth-session";
+import {jwtDecode} from "jwt-decode";
 
 WebBrowser.maybeCompleteAuthSession();
 
-interface AuthContextValue {
+export interface AuthContextValue {
     isLoading: boolean;
     isAuthenticated: boolean;
+    accessToken: string | null;
+    userId: string | null;
     login: () => Promise<void>;
     logout: () => Promise<void>;
 }
@@ -30,6 +33,7 @@ export function useAuth() {
 export function AuthProvider({children}: PropsWithChildren) {
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [userId, setUserId] = useState<string | null>(null);
 
     const [response, promptAsync] = requestAccessToken();
 
@@ -38,7 +42,9 @@ export function AuthProvider({children}: PropsWithChildren) {
             try {
                 const token: string | null = await getAccessToken();
                 if (!!token) {
+                    console.log('token stored');
                     setAccessToken(token);
+                    setUserId(jwtDecode(token).sub ?? null);
                 }
             } finally {
                 setIsLoading(false);
@@ -56,6 +62,7 @@ export function AuthProvider({children}: PropsWithChildren) {
             if (response.type === "success") {
                 const token: string = response.params.access_token;
                 setAccessToken(token);
+                setUserId(jwtDecode(token).sub ?? null);
                 saveAccessToken(token);
             }
         } finally {
@@ -77,6 +84,8 @@ export function AuthProvider({children}: PropsWithChildren) {
             value={{
                 isLoading,
                 isAuthenticated: !!accessToken,
+                accessToken,
+                userId,
                 login,
                 logout
             }}

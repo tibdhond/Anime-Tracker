@@ -8,11 +8,13 @@ const config: CodegenConfig = {
     // can be local or a url
     schema: "https://graphql.anilist.co/",
     // where we are writing all our graphql queries on the frontend
-    documents: ["src/lib/api/**/queries.graphql"],
-    ignoreNoDocuments: true, // for better experience with the watcher
+    documents: ["src/lib/queries/*.graphql"],
     generates: {
         [rootGQLDirectory]: {
             preset: "client",
+            presetConfig: {
+                fragmentMasking: false
+            }
         },
         // Integrates graphql-request using codegen.
         // For more plugins check the source

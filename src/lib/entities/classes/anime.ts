@@ -1,3 +1,5 @@
+import {StatusClass} from "@/lib/entities/types";
+
 type AnimeProps = {
     title: string;
     titleFull: string;
@@ -7,7 +9,7 @@ type AnimeProps = {
     nextMsg: string;
     nextTooltip: string;
     updateStatus: string;
-    updateClass: string;
+    updateClass: StatusClass;
     behind: number;
     air: number;
     img: string | null;
@@ -16,7 +18,7 @@ type AnimeProps = {
     isCurrent: boolean;
     notes: any;
     nextAiringEpisode: { episode: number, timeUntilAiring: number } | null;
-    offset: number;
+    offset: number | null;
     updatedAt: number | null;
 }
 
@@ -29,7 +31,7 @@ export class Anime {
     public nextMsg: string ;
     public nextTooltip: string;
     public updateStatus: string;
-    public updateClass: string;
+    public updateClass: StatusClass;
     public behind: number;
     public air: number;
     public img: string | null;
@@ -38,7 +40,7 @@ export class Anime {
     public isCurrent: boolean;
     public notes: any;
     public nextAiringEpisode: { episode: number, timeUntilAiring: number } | null;
-    public offset: number;
+    public offset: number | null;
     public updatedAt: number | null;
 
     constructor(

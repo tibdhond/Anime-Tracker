@@ -1,4 +1,6 @@
 /** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { GraphQLClient, type RequestOptions } from 'graphql-request';
 import gql from 'graphql-tag';
@@ -1666,22 +1668,6 @@ export enum MediaListSort {
   UpdatedTimeDesc = 'UPDATED_TIME_DESC'
 }
 
-/** Media list watching/reading status enum. */
-export enum MediaListStatus {
-  /** Finished watching/reading */
-  Completed = 'COMPLETED',
-  /** Currently watching/reading */
-  Current = 'CURRENT',
-  /** Stopped watching/reading before completing */
-  Dropped = 'DROPPED',
-  /** Paused watching/reading */
-  Paused = 'PAUSED',
-  /** Planning to watch/read */
-  Planning = 'PLANNING',
-  /** Re-watching/reading */
-  Repeating = 'REPEATING'
-}
-
 /** A user's list options for anime or manga lists */
 export type MediaListTypeOptions = {
   __typename?: 'MediaListTypeOptions';
@@ -1784,16 +1770,6 @@ export enum MediaRelation {
   Summary = 'SUMMARY'
 }
 
-export enum MediaSeason {
-  /** Predominantly started airing between October and November */
-  Fall = 'FALL',
-  /** Predominantly started airing between April and June */
-  Spring = 'SPRING',
-  /** Predominantly started airing between July and September */
-  Summer = 'SUMMER',
-  /** Predominantly started airing between January and March */
-  Winter = 'WINTER'
-}
 
 /** Media sort enums */
 export enum MediaSort {
@@ -1878,20 +1854,6 @@ export type MediaStats = {
   scoreDistribution?: Maybe<Array<Maybe<ScoreDistribution>>>;
   statusDistribution?: Maybe<Array<Maybe<StatusDistribution>>>;
 };
-
-/** The current releasing status of the media */
-export enum MediaStatus {
-  /** Ended before the work could be finished */
-  Cancelled = 'CANCELLED',
-  /** Has completed and is no longer being released */
-  Finished = 'FINISHED',
-  /** Version 2 only. Is currently paused from releasing and will resume at a later date */
-  Hiatus = 'HIATUS',
-  /** To be released at a later date */
-  NotYetReleased = 'NOT_YET_RELEASED',
-  /** Currently releasing */
-  Releasing = 'RELEASING'
-}
 
 /** Data and links to legal streaming episodes on external sites */
 export type MediaStreamingEpisode = {
@@ -2545,50 +2507,6 @@ export type NotificationOptionInput = {
   /** The type of notification */
   type?: InputMaybe<NotificationType>;
 };
-
-/** Notification type enum */
-export enum NotificationType {
-  /** A user has liked your activity */
-  ActivityLike = 'ACTIVITY_LIKE',
-  /** A user has mentioned you in their activity */
-  ActivityMention = 'ACTIVITY_MENTION',
-  /** A user has sent you message */
-  ActivityMessage = 'ACTIVITY_MESSAGE',
-  /** A user has replied to your activity */
-  ActivityReply = 'ACTIVITY_REPLY',
-  /** A user has liked your activity reply */
-  ActivityReplyLike = 'ACTIVITY_REPLY_LIKE',
-  /** A user has replied to activity you have also replied to */
-  ActivityReplySubscribed = 'ACTIVITY_REPLY_SUBSCRIBED',
-  /** An anime you are currently watching has aired */
-  Airing = 'AIRING',
-  /** A user's character submission has been accepted, partially accepted, or rejected */
-  CharacterSubmissionUpdate = 'CHARACTER_SUBMISSION_UPDATE',
-  /** A user has followed you */
-  Following = 'FOLLOWING',
-  /** An anime or manga has had a data change that affects how a user may track it in their lists */
-  MediaDataChange = 'MEDIA_DATA_CHANGE',
-  /** An anime or manga on the user's list has been deleted from the site */
-  MediaDeletion = 'MEDIA_DELETION',
-  /** Anime or manga entries on the user's list have been merged into a single entry */
-  MediaMerge = 'MEDIA_MERGE',
-  /** A user's submission has been accepted, partially accepted, or rejected */
-  MediaSubmissionUpdate = 'MEDIA_SUBMISSION_UPDATE',
-  /** A new anime or manga has been added to the site where its related media is on the user's list */
-  RelatedMediaAddition = 'RELATED_MEDIA_ADDITION',
-  /** A user's staff submission has been accepted, partially accepted, or rejected */
-  StaffSubmissionUpdate = 'STAFF_SUBMISSION_UPDATE',
-  /** A user has liked your forum comment */
-  ThreadCommentLike = 'THREAD_COMMENT_LIKE',
-  /** A user has mentioned you in a forum comment */
-  ThreadCommentMention = 'THREAD_COMMENT_MENTION',
-  /** A user has replied to your forum comment */
-  ThreadCommentReply = 'THREAD_COMMENT_REPLY',
-  /** A user has liked your forum thread */
-  ThreadLike = 'THREAD_LIKE',
-  /** A user has commented in one of your subscribed forum threads */
-  ThreadSubscribed = 'THREAD_SUBSCRIBED'
-}
 
 /** Notification union type */
 export type NotificationUnion = ActivityLikeNotification | ActivityMentionNotification | ActivityMessageNotification | ActivityReplyLikeNotification | ActivityReplyNotification | ActivityReplySubscribedNotification | AiringNotification | CharacterSubmissionUpdateNotification | FollowingNotification | MediaDataChangeNotification | MediaDeletionNotification | MediaMergeNotification | MediaSubmissionUpdateNotification | RelatedMediaAdditionNotification | StaffSubmissionUpdateNotification | ThreadCommentLikeNotification | ThreadCommentMentionNotification | ThreadCommentReplyNotification | ThreadCommentSubscribedNotification | ThreadLikeNotification;
@@ -4753,7 +4671,304 @@ export type YearStats = {
   year?: Maybe<Scalars['Int']['output']>;
 };
 
+/** Media list watching/reading status enum. */
+export type MediaListStatus =
+  /** Finished watching/reading */
+  | 'COMPLETED'
+  /** Currently watching/reading */
+  | 'CURRENT'
+  /** Stopped watching/reading before completing */
+  | 'DROPPED'
+  /** Paused watching/reading */
+  | 'PAUSED'
+  /** Planning to watch/read */
+  | 'PLANNING'
+  /** Re-watching/reading */
+  | 'REPEATING';
 
+export type MediaSeason =
+  /** Predominantly started airing between October and November */
+  | 'FALL'
+  /** Predominantly started airing between April and June */
+  | 'SPRING'
+  /** Predominantly started airing between July and September */
+  | 'SUMMER'
+  /** Predominantly started airing between January and March */
+  | 'WINTER';
+
+/** The current releasing status of the media */
+export type MediaStatus =
+  /** Ended before the work could be finished */
+  | 'CANCELLED'
+  /** Has completed and is no longer being released */
+  | 'FINISHED'
+  /** Version 2 only. Is currently paused from releasing and will resume at a later date */
+  | 'HIATUS'
+  /** To be released at a later date */
+  | 'NOT_YET_RELEASED'
+  /** Currently releasing */
+  | 'RELEASING';
+
+/** Notification type enum */
+export type NotificationType =
+  /** A user has liked your activity */
+  | 'ACTIVITY_LIKE'
+  /** A user has mentioned you in their activity */
+  | 'ACTIVITY_MENTION'
+  /** A user has sent you message */
+  | 'ACTIVITY_MESSAGE'
+  /** A user has replied to your activity */
+  | 'ACTIVITY_REPLY'
+  /** A user has liked your activity reply */
+  | 'ACTIVITY_REPLY_LIKE'
+  /** A user has replied to activity you have also replied to */
+  | 'ACTIVITY_REPLY_SUBSCRIBED'
+  /** An anime you are currently watching has aired */
+  | 'AIRING'
+  /** A user's character submission has been accepted, partially accepted, or rejected */
+  | 'CHARACTER_SUBMISSION_UPDATE'
+  /** A user has followed you */
+  | 'FOLLOWING'
+  /** An anime or manga has had a data change that affects how a user may track it in their lists */
+  | 'MEDIA_DATA_CHANGE'
+  /** An anime or manga on the user's list has been deleted from the site */
+  | 'MEDIA_DELETION'
+  /** Anime or manga entries on the user's list have been merged into a single entry */
+  | 'MEDIA_MERGE'
+  /** A user's submission has been accepted, partially accepted, or rejected */
+  | 'MEDIA_SUBMISSION_UPDATE'
+  /** A new anime or manga has been added to the site where its related media is on the user's list */
+  | 'RELATED_MEDIA_ADDITION'
+  /** A user's staff submission has been accepted, partially accepted, or rejected */
+  | 'STAFF_SUBMISSION_UPDATE'
+  /** A user has liked your forum comment */
+  | 'THREAD_COMMENT_LIKE'
+  /** A user has mentioned you in a forum comment */
+  | 'THREAD_COMMENT_MENTION'
+  /** A user has replied to your forum comment */
+  | 'THREAD_COMMENT_REPLY'
+  /** A user has liked your forum thread */
+  | 'THREAD_LIKE'
+  /** A user has commented in one of your subscribed forum threads */
+  | 'THREAD_SUBSCRIBED';
+
+export type AnimeListFieldsFragment = { id: number, progress: number | null, notes: string | null, updatedAt: number | null, media: { id: number, idMal: number | null, episodes: number | null, status: MediaStatus | null, title: { userPreferred: string | null } | null, nextAiringEpisode: { episode: number, timeUntilAiring: number } | null, coverImage: { medium: string | null } | null, endDate: { year: number | null, month: number | null } | null } | null };
+
+export type AnimeFieldsFragment = { id: number, idMal: number | null, season: MediaSeason | null, episodes: number | null, status: MediaStatus | null, title: { userPreferred: string | null } | null, nextAiringEpisode: { episode: number, timeUntilAiring: number } | null, coverImage: { medium: string | null } | null, startDate: { year: number | null, month: number | null, day: number | null } | null, endDate: { year: number | null, month: number | null } | null, mediaListEntry: { id: number, status: MediaListStatus | null, progress: number | null, notes: string | null, updatedAt: number | null } | null };
+
+export type GetAnimeListQueryVariables = Exact<{
+  id: number;
+}>;
+
+
+export type GetAnimeListQuery = { Page: { mediaList: Array<{ id: number, progress: number | null, notes: string | null, updatedAt: number | null, media: { id: number, idMal: number | null, episodes: number | null, status: MediaStatus | null, title: { userPreferred: string | null } | null, nextAiringEpisode: { episode: number, timeUntilAiring: number } | null, coverImage: { medium: string | null } | null, endDate: { year: number | null, month: number | null } | null } | null } | null> | null } | null };
+
+export type GetAiringListQueryVariables = Exact<{
+  season?: MediaSeason | null | undefined;
+}>;
+
+
+export type GetAiringListQuery = { Page: { media: Array<{ id: number, idMal: number | null, season: MediaSeason | null, episodes: number | null, status: MediaStatus | null, title: { userPreferred: string | null } | null, nextAiringEpisode: { episode: number, timeUntilAiring: number } | null, coverImage: { medium: string | null } | null, startDate: { year: number | null, month: number | null, day: number | null } | null, endDate: { year: number | null, month: number | null } | null, mediaListEntry: { id: number, status: MediaListStatus | null, progress: number | null, notes: string | null, updatedAt: number | null } | null } | null> | null } | null };
+
+export type GetNotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetNotificationsQuery = { Page: { notifications: Array<
+      | { __typename: 'ActivityLikeNotification', type: NotificationType | null, createdAt: number | null, activityId: number, user: { name: string, avatar: { large: string | null } | null } | null }
+      | { __typename: 'ActivityMentionNotification' }
+      | { __typename: 'ActivityMessageNotification', type: NotificationType | null, createdAt: number | null, activityId: number, user: { name: string, avatar: { large: string | null } | null } | null }
+      | { __typename: 'ActivityReplyLikeNotification', type: NotificationType | null, createdAt: number | null, activityId: number, user: { name: string, avatar: { large: string | null } | null } | null }
+      | { __typename: 'ActivityReplyNotification', type: NotificationType | null, createdAt: number | null, activityId: number, user: { name: string, avatar: { large: string | null } | null } | null }
+      | { __typename: 'ActivityReplySubscribedNotification' }
+      | { __typename: 'AiringNotification', type: NotificationType | null, episode: number, createdAt: number | null, media: { id: number, idMal: number | null, title: { userPreferred: string | null } | null, coverImage: { medium: string | null } | null } | null }
+      | { __typename: 'CharacterSubmissionUpdateNotification' }
+      | { __typename: 'FollowingNotification' }
+      | { __typename: 'MediaDataChangeNotification' }
+      | { __typename: 'MediaDeletionNotification' }
+      | { __typename: 'MediaMergeNotification' }
+      | { __typename: 'MediaSubmissionUpdateNotification' }
+      | { __typename: 'RelatedMediaAdditionNotification', type: NotificationType | null, createdAt: number | null, media: { id: number, idMal: number | null, title: { userPreferred: string | null } | null, coverImage: { medium: string | null } | null } | null }
+      | { __typename: 'StaffSubmissionUpdateNotification' }
+      | { __typename: 'ThreadCommentLikeNotification' }
+      | { __typename: 'ThreadCommentMentionNotification' }
+      | { __typename: 'ThreadCommentReplyNotification' }
+      | { __typename: 'ThreadCommentSubscribedNotification' }
+      | { __typename: 'ThreadLikeNotification' }
+     | null> | null } | null };
+
+export const AnimeListFieldsFragmentDoc = gql`
+    fragment AnimeListFields on MediaList {
+  id
+  progress
+  notes
+  updatedAt
+  media {
+    id
+    idMal
+    title {
+      userPreferred
+    }
+    episodes
+    status
+    nextAiringEpisode {
+      episode
+      timeUntilAiring
+    }
+    coverImage {
+      medium
+    }
+    endDate {
+      year
+      month
+    }
+  }
+}
+    `;
+export const AnimeFieldsFragmentDoc = gql`
+    fragment AnimeFields on Media {
+  id
+  idMal
+  season
+  title {
+    userPreferred
+  }
+  episodes
+  status
+  nextAiringEpisode {
+    episode
+    timeUntilAiring
+  }
+  coverImage {
+    medium
+  }
+  startDate {
+    year
+    month
+    day
+  }
+  endDate {
+    year
+    month
+  }
+  mediaListEntry {
+    id
+    status
+    progress
+    notes
+    updatedAt
+  }
+}
+    `;
+export const GetAnimeListDocument = gql`
+    query GetAnimeList($id: Int!) {
+  Page(page: 0, perPage: 50) {
+    mediaList(userId: $id, status: CURRENT, type: ANIME) {
+      ...AnimeListFields
+    }
+  }
+}
+    ${AnimeListFieldsFragmentDoc}`;
+export const GetAiringListDocument = gql`
+    query GetAiringList($season: MediaSeason) {
+  Page(page: 0, perPage: 50) {
+    media(
+      type: ANIME
+      status_in: [RELEASING, NOT_YET_RELEASED]
+      startDate_greater: 2000
+      onList: true
+      season: $season
+      sort: START_DATE
+    ) {
+      ...AnimeFields
+    }
+  }
+}
+    ${AnimeFieldsFragmentDoc}`;
+export const GetNotificationsDocument = gql`
+    query GetNotifications {
+  Page(page: 0, perPage: 50) {
+    notifications(
+      resetNotificationCount: false
+      type_in: [ACTIVITY_MESSAGE, ACTIVITY_REPLY, FOLLOWING, ACTIVITY_MENTION, THREAD_COMMENT_MENTION, THREAD_SUBSCRIBED, THREAD_COMMENT_REPLY, AIRING, ACTIVITY_LIKE, ACTIVITY_REPLY_LIKE, THREAD_LIKE, THREAD_COMMENT_LIKE, ACTIVITY_REPLY_SUBSCRIBED, RELATED_MEDIA_ADDITION, MEDIA_MERGE, MEDIA_DELETION]
+    ) {
+      __typename
+      ... on AiringNotification {
+        type
+        episode
+        createdAt
+        media {
+          id
+          idMal
+          title {
+            userPreferred
+          }
+          coverImage {
+            medium
+          }
+        }
+      }
+      ... on ActivityMessageNotification {
+        type
+        createdAt
+        user {
+          name
+          avatar {
+            large
+          }
+        }
+        activityId
+      }
+      ... on ActivityReplyLikeNotification {
+        type
+        createdAt
+        user {
+          name
+          avatar {
+            large
+          }
+        }
+        activityId
+      }
+      ... on ActivityReplyNotification {
+        type
+        createdAt
+        user {
+          name
+          avatar {
+            large
+          }
+        }
+        activityId
+      }
+      ... on ActivityLikeNotification {
+        type
+        createdAt
+        user {
+          name
+          avatar {
+            large
+          }
+        }
+        activityId
+      }
+      ... on RelatedMediaAdditionNotification {
+        type
+        createdAt
+        media {
+          id
+          idMal
+          title {
+            userPreferred
+          }
+          coverImage {
+            medium
+          }
+        }
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -4762,7 +4977,15 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-
+    GetAnimeList(variables: GetAnimeListQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetAnimeListQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAnimeListQuery>({ document: GetAnimeListDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetAnimeList', 'query', variables);
+    },
+    GetAiringList(variables?: GetAiringListQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetAiringListQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAiringListQuery>({ document: GetAiringListDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetAiringList', 'query', variables);
+    },
+    GetNotifications(variables?: GetNotificationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetNotificationsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNotificationsQuery>({ document: GetNotificationsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetNotifications', 'query', variables);
+    }
   };
 }
 export type Sdk = ReturnType<typeof getSdk>;

@@ -1,0 +1,100 @@
+query GetNotifications {
+    Page(page: 0, perPage: 50) {
+        notifications(
+            resetNotificationCount: false
+            type_in: [
+                ACTIVITY_MESSAGE
+                ACTIVITY_REPLY
+                FOLLOWING
+                ACTIVITY_MENTION
+                THREAD_COMMENT_MENTION
+                THREAD_SUBSCRIBED
+                THREAD_COMMENT_REPLY
+                AIRING
+                ACTIVITY_LIKE
+                ACTIVITY_REPLY_LIKE
+                THREAD_LIKE
+                THREAD_COMMENT_LIKE
+                ACTIVITY_REPLY_SUBSCRIBED
+                RELATED_MEDIA_ADDITION
+                MEDIA_MERGE
+                MEDIA_DELETION
+            ]
+        ) {
+            __typename
+            ... on AiringNotification {
+                type,
+                episode,
+                createdAt,
+                media {
+                    id,
+                    idMal,
+                    title {
+                        userPreferred
+                    },
+                    coverImage {
+                        medium
+                    }
+                }
+            }
+            ... on ActivityMessageNotification {
+                type,
+                createdAt,
+                user {
+                    name,
+                    avatar {
+                        large
+                    }
+                }
+                activityId
+            }
+            ... on ActivityReplyLikeNotification {
+                type,
+                createdAt,
+                user {
+                    name,
+                    avatar {
+                        large
+                    }
+                }
+                activityId
+            }
+            ... on ActivityReplyNotification {
+                type,
+                createdAt,
+                user {
+                    name,
+                    avatar {
+                        large
+                    }
+                }
+                activityId
+            }
+            ... on ActivityLikeNotification {
+                type,
+                createdAt,
+                user {
+                    name,
+                    avatar {
+                        large
+                    }
+                }
+                activityId
+            }
+            ... on RelatedMediaAdditionNotification {
+                type,
+                createdAt,
+                media {
+                    id,
+                    idMal,
+                    title {
+                        userPreferred
+                    },
+                    coverImage {
+                        medium
+                    }
+                }
+            }
+        }
+    }
+}
