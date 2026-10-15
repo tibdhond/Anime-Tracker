@@ -5,6 +5,7 @@ import {GraphQLRequestProvider} from "@/lib/api/GraphqlProvider";
 import {View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import {Tabs} from "expo-router";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,7 +17,7 @@ const queryClient = new QueryClient({
 
 export default function RootLayout() {
   return (
-      <>
+      <GestureHandlerRootView style={{ flex: 1 }}>
           <StatusBar hidden={true}></StatusBar>
           <AuthProvider>
               <QueryClientProvider client={queryClient}>
@@ -33,6 +34,6 @@ export default function RootLayout() {
                   </GraphQLRequestProvider>
               </QueryClientProvider>
           </AuthProvider>
-      </>
+      </GestureHandlerRootView>
   );
 }

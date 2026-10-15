@@ -4,25 +4,25 @@
     "slug": "Anime-Tracker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/tanjonion.png",
+    "icon": "./assets/images/tanjonion-icon.png",
     "scheme": "animetracker",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/tanjonion.icon"
+      "icon": "./assets/tanjonion-icon.icon"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF",
-        "foregroundImage": "./assets/images/tanjonion.png",
-        "backgroundImage": "./assets/images/tanjonion.png",
-        "monochromeImage": "./assets/images/tanjonion.png"
+        "foregroundImage": "./assets/images/tanjonion-icon.png",
+        "backgroundImage": "./assets/images/tanjonion-icon.png",
+        "monochromeImage": "./assets/images/tanjonion-icon.png"
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.animetracker"
     },
       "web": {
       "output": "static",
-      "favicon": "./assets/images/tanjonion.png"
+      "favicon": "./assets/images/tanjonion-icon.png"
     },
     "plugins": [
       "expo-router",

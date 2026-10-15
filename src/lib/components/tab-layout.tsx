@@ -1,4 +1,4 @@
-import {TabNavigationState, withLayoutContext} from 'expo-router';
+import {router, TabNavigationState, withLayoutContext} from 'expo-router';
 import {
     createMaterialTopTabNavigator, MaterialTopTabBar, MaterialTopTabBarProps,
     MaterialTopTabNavigationEventMap,
@@ -9,9 +9,12 @@ import {MaterialIcons} from "@react-native-vector-icons/material-icons/";
 import {NavigationRoute, ParamListBase} from "expo-router/build/react-navigation";
 import {NotificationContextValue, useNotificationContext} from "@/lib/api/NotificationProvider";
 import {BadgedBox, Badge} from "@expo/ui/jetpack-compose";
-import {Text} from "react-native";
+import {Pressable, Text} from "react-native";
 import {Host} from "@expo/ui/jetpack-compose";
 import {size, clip, Shapes} from '@expo/ui/jetpack-compose/modifiers';
+import {RefObject, useCallback, useRef} from "react";
+import {tap} from "lodash-es";
+import {easterEggClicker} from "@/lib/helpers/easter-egg-clicker";
 
 const { Navigator } = createMaterialTopTabNavigator();
 type MaterialTopTabOptions = MaterialTopTabNavigationOptions & {
@@ -46,6 +49,10 @@ export default function TabLayout() {
     const notificationContext: NotificationContextValue | undefined = useNotificationContext();
     const newNotificationCount: number = notificationContext?.newNotificationCount ?? 0;
     const notificationCountString: string = newNotificationCount > 9 ? '9+' : String(newNotificationCount);
+
+    const onEasterEggReached: () => void  = easterEggClicker(() => {
+        router.replace('/loading-view');
+    })
 
     return (
         <MaterialTopTabs
@@ -83,7 +90,10 @@ export default function TabLayout() {
                     <MaterialIcons name='live-tv' color={color} size={24}/>
                 )
             }}/>
-            <MaterialTopTabs.Screen name="notifications" options={{
+            <MaterialTopTabs.Screen
+                name="notifications"
+                listeners={{tabPress: () => onEasterEggReached()}}
+                options={{
                 title: "Notifications",
                 tabBarIcon: ({color}) => (
                     <Host matchContents>
@@ -100,7 +110,7 @@ export default function TabLayout() {
                     </Host>
                 )
             }}/>
-            <MaterialTopTabs.Screen name="index" options={{ href: null }}/>
+        <MaterialTopTabs.Screen name="index" options={{ href: null }}/>
         </MaterialTopTabs>
     );
 }
