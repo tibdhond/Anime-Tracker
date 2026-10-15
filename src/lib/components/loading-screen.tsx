@@ -117,6 +117,9 @@ const WaveText = ({
 };
 
 function DraggableSpinningLogo() {
+    const onEasterEggReached: () => void  = easterEggClicker(() => {
+        router.replace('/(app)/current');
+    });
     const { width, height } = useWindowDimensions();
     const insets = useSafeAreaInsets();
     // Spin
@@ -234,22 +237,19 @@ function DraggableSpinningLogo() {
     return (
         <GestureDetector gesture={pan}>
             <Animated.View style={dragStyle}>
-                <Animated.Image style={[styles.logo, spinStyle]} source={require('@/assets/images/tanjonion.png')} />
+                <Pressable onPress={onEasterEggReached}>
+                    <Animated.Image style={[styles.logo, spinStyle]} source={require('@/assets/images/tanjonion.png')} />
+                </Pressable>
             </Animated.View>
         </GestureDetector>
     );
 }
 
 export function LoadingScreen() {
-    const onEasterEggReached: () => void  = easterEggClicker(() => {
-        router.replace('/(app)/current');
-    });
     return (
         <View style={styles.container}>
             <WaveText style={styles.waveText} text="Loading..." />
-            <Pressable onPress={onEasterEggReached}>
-                <DraggableSpinningLogo />
-            </Pressable>
+            <DraggableSpinningLogo />
         </View>
     )
 }
