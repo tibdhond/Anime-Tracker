@@ -66,7 +66,9 @@ export function AuthProvider({children}: PropsWithChildren) {
                 saveAccessToken(token);
             }
         } finally {
-            setIsLoading(false);
+            if (response) {
+                setIsLoading(false);
+            }
         }
     }, [response]);
 
